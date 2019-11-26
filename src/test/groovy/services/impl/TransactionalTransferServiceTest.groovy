@@ -1,7 +1,9 @@
 package services.impl
 
+import domain.Account
 import exceptions.InsufficientFundsException
 import exceptions.TransferFailedException
+import repository.BasicRepository
 import spock.lang.Specification
 
 class TransactionalTransferServiceTest extends Specification {
@@ -9,16 +11,30 @@ class TransactionalTransferServiceTest extends Specification {
   def 'transfer from account with sufficient funds'() {
     given: 'a account with non-zero initial balance'
     def initialBalance = BigDecimal.valueOf(100)
-    def sender = new SimpleBankAccount(ID: 1, balance: initialBalance)
+    def sender = new SimpleBankAccount(id: 1, balance: initialBalance)
 
     and: 'another account with zero balance'
-    def recipient = new SimpleBankAccount(ID: 2)
+    def recipient = new SimpleBankAccount(id: 2)
 
     and: 'a valid amount'
     def amount = BigDecimal.valueOf(50)
 
+    and: 'fake repository'
+    def store = []
+    def repository = new BasicRepository<Account, Long>() {
+      @Override
+      Optional<Account> findById(Long aLong) {
+        return Optional.empty()
+      }
+
+      @Override
+      void save(Account bankAccount) {
+        store.add(bankAccount)
+      }
+    }
+
     and: 'the transfer service'
-    def underTest = new TransactionalTransferService()
+    def underTest = new TransactionalTransferService(repository)
 
     when:
     underTest.transferFunds(sender, recipient, amount)
@@ -26,15 +42,16 @@ class TransactionalTransferServiceTest extends Specification {
     then:
     sender.balance == initialBalance.subtract(amount)
     recipient.balance == amount
+    store == [sender, recipient]
   }
 
   def 'transfer from account with insufficient funds'() {
     given: 'a account with non-zero initial balance'
     def initialBalance = BigDecimal.valueOf(50)
-    def sender = new SimpleBankAccount(ID: 1, balance: initialBalance)
+    def sender = new SimpleBankAccount(id: 1, balance: initialBalance)
 
     and: 'another account with zero balance'
-    def recipient = new SimpleBankAccount(ID: 2)
+    def recipient = new SimpleBankAccount(id: 2)
 
     and: 'an excessive amount'
     def amount = BigDecimal.valueOf(100)
@@ -48,7 +65,7 @@ class TransactionalTransferServiceTest extends Specification {
     then:
     TransferFailedException e = thrown()
     e.cause.class == InsufficientFundsException
-    e.message == "Couldn't withdraw " + amount + sender.getCurrency().getDisplayName() +
+    e.message == "Couldn't credit " + amount + sender.getCurrency().getDisplayName() +
         " from a bank account with ID: 1"
   }
 }

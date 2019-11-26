@@ -13,7 +13,7 @@ class BasicInMemoryRepositoryTest extends Specification {
     def id = 5
     def identifiable = new Identifiable<Integer>() {
       @Override
-      Integer getID() {
+      Integer getId() {
         return id
       }
     }
@@ -33,7 +33,7 @@ class BasicInMemoryRepositoryTest extends Specification {
     def id = 10;
     def identifiable = new Identifiable<Integer>() {
       @Override
-      Integer getID() {
+      Integer getId() {
         return id
       }
     }

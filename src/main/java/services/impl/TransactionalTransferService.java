@@ -1,21 +1,33 @@
 package services.impl;
 
-import domain.BankAccount;
+import domain.Account;
 import exceptions.InsufficientFundsException;
 import exceptions.TransferFailedException;
+import repository.BasicRepository;
 import services.TransferService;
 
 import java.math.BigDecimal;
 
-public class TransactionalTransferService implements TransferService<BankAccount> {
+public class TransactionalTransferService implements TransferService<Account> {
+
+    private final BasicRepository<Account, Long> repository;
+
+    public TransactionalTransferService(BasicRepository<Account, Long> repository) {
+        this.repository = repository;
+    }
+
     @Override
-    public void transferFunds(BankAccount sender, BankAccount recipient, BigDecimal amount) throws TransferFailedException {
+    public void transferFunds(Account sender, Account recipient, BigDecimal amount) throws TransferFailedException {
         try {
-            sender.withdraw(amount);
-            recipient.deposit(amount);
+            sender.credit(amount);
+            recipient.debit(amount);
+            repository.save(sender);
+            repository.save(recipient);
         } catch (InsufficientFundsException e) {
-            throw new TransferFailedException("Couldn't withdraw " + amount + sender.getCurrency().getDisplayName() +
-                    " from a bank account with ID: " + sender.getID(), e);
+            throw new TransferFailedException("Couldn't credit " + amount + sender.getCurrency().getDisplayName() +
+                    " from a bank account with ID: " + sender.getId(), e);
+        } catch (RuntimeException e) {
+
         }
     }
 }

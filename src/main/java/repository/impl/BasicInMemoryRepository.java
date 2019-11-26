@@ -28,6 +28,6 @@ public abstract class BasicInMemoryRepository<T extends Identifiable<ID>, ID ext
 
     @Override
     public void save(T t) {
-        dataStore.put(t.getID(), t);
+        dataStore.put(t.getId(), t);
     }
 }

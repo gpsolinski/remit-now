@@ -1,23 +1,36 @@
 package services.impl
 
-import domain.BankAccount
+import domain.Account
 import exceptions.InsufficientFundsException
 
-class SimpleBankAccount implements BankAccount<Long> {
-  Long ID
-  BigDecimal balance = 0
-  Currency currency = Currency.getInstance(Locale.US)
+class SimpleBankAccount implements Account {
+  final Long id
+  BigDecimal balance
+  BigDecimal availableBalance
+  final Currency currency
 
-  @Override
-  void deposit(BigDecimal amount) {
-    balance = balance.add(amount)
+  SimpleBankAccount(Long id, BigDecimal initialBalance = 0, Currency currency = Currency.getInstance(Locale.US)) {
+    this.id = id
+    this.balance = initialBalance
+    this.availableBalance = initialBalance
+    this.currency = currency
   }
 
   @Override
-  void withdraw(BigDecimal amount) throws InsufficientFundsException {
-    if (balance < amount) {
+  void debit(BigDecimal amount) {
+    availableBalance = availableBalance.add(amount)
+  }
+
+  @Override
+  void credit(BigDecimal amount) throws InsufficientFundsException {
+    if (availableBalance < amount) {
       throw new InsufficientFundsException()
     }
-    balance = balance.subtract(amount)
+    availableBalance = availableBalance.subtract(amount)
+  }
+
+  @Override
+  void updateBalance() {
+    balance = availableBalance
   }
 }
