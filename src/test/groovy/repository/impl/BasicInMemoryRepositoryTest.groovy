@@ -48,6 +48,6 @@ class BasicInMemoryRepositoryTest extends Specification {
     def found = underTest.findById(id)
 
     then:
-    found == identifiable
+    found.get() == identifiable
   }
 }

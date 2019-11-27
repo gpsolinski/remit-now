@@ -1,8 +1,9 @@
 package repository;
 
 import java.io.Serializable;
+import java.util.Optional;
 
 public interface BasicRepository<T, ID extends Serializable> {
-    T findById(ID id);
+    Optional<T> findById(ID id);
     void save(T t);
 }

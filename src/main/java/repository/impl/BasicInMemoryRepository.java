@@ -6,6 +6,7 @@ import repository.BasicRepository;
 
 import java.io.Serializable;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class BasicInMemoryRepository<T extends Identifiable<ID>, ID extends Serializable> implements BasicRepository<T, ID> {
@@ -22,8 +23,8 @@ public abstract class BasicInMemoryRepository<T extends Identifiable<ID>, ID ext
     }
 
     @Override
-    public T findById(ID id) {
-        return dataStore.get(id);
+    public Optional<T> findById(ID id) {
+        return Optional.ofNullable(dataStore.get(id));
     }
 
     @Override
