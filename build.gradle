@@ -54,3 +54,13 @@ task acceptanceTest(type: Test, description: 'Runs Acceptance Tests', group: 've
 }
 
 check.dependsOn acceptanceTest
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'com.gpsolinski.remitnow.web.TransferServiceMainVerticle'
+    }
+
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
