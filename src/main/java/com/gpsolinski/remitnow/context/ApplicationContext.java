@@ -1,13 +1,13 @@
 package com.gpsolinski.remitnow.context;
 
-import lombok.Getter;
-import lombok.val;
 import com.gpsolinski.remitnow.repository.AccountRepository;
 import com.gpsolinski.remitnow.repository.TransactionRepository;
 import com.gpsolinski.remitnow.repository.impl.DefaultAccountRepository;
 import com.gpsolinski.remitnow.repository.impl.DefaultTransactionRepository;
 import com.gpsolinski.remitnow.services.TransferService;
 import com.gpsolinski.remitnow.services.impl.TransactionalTransferService;
+import lombok.Getter;
+import lombok.val;
 
 @Getter
 public class ApplicationContext {

@@ -3,8 +3,6 @@ package com.gpsolinski.remitnow.web.dto;
 import com.gpsolinski.remitnow.domain.Transaction;
 import com.gpsolinski.remitnow.domain.TransactionState;
 import com.gpsolinski.remitnow.domain.impl.TransactionType;
-import com.gpsolinski.remitnow.domain.impl.transactions.Deposit;
-import com.gpsolinski.remitnow.domain.impl.transactions.Withdrawal;
 import io.vertx.codegen.annotations.DataObject;
 import io.vertx.codegen.annotations.Fluent;
 import io.vertx.core.json.JsonObject;
