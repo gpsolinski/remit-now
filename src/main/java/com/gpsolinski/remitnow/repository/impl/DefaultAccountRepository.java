@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2019 Grzegorz Solinski. All rights reserved.
+ */
+
 package com.gpsolinski.remitnow.repository.impl;
 
 import com.gpsolinski.remitnow.domain.Account;

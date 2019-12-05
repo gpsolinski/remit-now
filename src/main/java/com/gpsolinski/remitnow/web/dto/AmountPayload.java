@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2019 Grzegorz Solinski. All rights reserved.
+ */
+
 package com.gpsolinski.remitnow.web.dto;
 
 import io.vertx.codegen.annotations.DataObject;
