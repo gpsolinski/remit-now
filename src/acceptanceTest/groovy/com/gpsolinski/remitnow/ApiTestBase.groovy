@@ -8,8 +8,8 @@ import spock.lang.Specification
 
 abstract class ApiTestBase extends Specification {
 
-  static final String SERVER_URL = System.getenv("SERVER_URL")
-  static final String SERVER_PORT = System.getenv("SERVER_PORT")
+  static final String SERVER_URL = 'localhost'
+  static final String SERVER_PORT = '8080'
 
   @Shared
   def client = new RESTClient("http://$SERVER_URL:$SERVER_PORT", "application/json")
