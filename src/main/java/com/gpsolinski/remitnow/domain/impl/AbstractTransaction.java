@@ -6,7 +6,12 @@ import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.util.concurrent.atomic.AtomicReference;
-
+/**
+ * Class implementing some common characteristics of transactions,
+ * like having an amount and a state.
+ *
+ * @author Grzegorz Solinski
+ */
 @Getter
 public abstract class AbstractTransaction implements Transaction {
     protected final Long id;

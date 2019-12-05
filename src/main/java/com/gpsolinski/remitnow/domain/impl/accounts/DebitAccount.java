@@ -2,12 +2,22 @@ package com.gpsolinski.remitnow.domain.impl.accounts;
 
 import com.gpsolinski.remitnow.domain.Account;
 import com.gpsolinski.remitnow.exceptions.InsufficientFundsException;
+import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.util.Currency;
 import java.util.concurrent.atomic.AtomicReference;
-
+/**
+ * A default implementation of the Account interface, representing a debit account.
+ * Debit account is an account, in which a debit operation increases balance,
+ * while credit operation decreases balance.
+ * The operations on the account are thread-safe.
+ *
+ * @author Grzegorz Solinski
+ */
+@Getter
 public final class DebitAccount implements Account {
+
     private final Long id;
     private AtomicReference<BigDecimal> balance;
     private AtomicReference<BigDecimal> availableBalance;
@@ -21,11 +31,6 @@ public final class DebitAccount implements Account {
     }
 
     @Override
-    public Long getId() {
-        return id;
-    }
-
-    @Override
     public BigDecimal getBalance() {
         return balance.get();
     }
@@ -33,11 +38,6 @@ public final class DebitAccount implements Account {
     @Override
     public BigDecimal getAvailableBalance() {
         return availableBalance.get();
-    }
-
-    @Override
-    public Currency getCurrency() {
-        return currency;
     }
 
     @Override

@@ -8,7 +8,12 @@ import com.gpsolinski.remitnow.exceptions.InsufficientFundsException;
 import lombok.Getter;
 
 import java.math.BigDecimal;
-
+/**
+ * A transaction type representing a withdrawal.
+ * It performs a credit operation on an account, but has no account to debit.
+ *
+ * @author Grzegorz Solinski
+ */
 @Getter
 public class Withdrawal extends AbstractTransaction implements Transaction {
 
@@ -22,11 +27,6 @@ public class Withdrawal extends AbstractTransaction implements Transaction {
     @Override
     public Account getDebitAccount() {
         throw new UnsupportedOperationException("Withdrawal transaction does not have a debit account, only a credit account");
-    }
-
-    @Override
-    public TransactionState getState() {
-        return state.get();
     }
 
     @Override

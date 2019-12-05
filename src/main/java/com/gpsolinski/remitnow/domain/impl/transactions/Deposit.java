@@ -7,7 +7,12 @@ import com.gpsolinski.remitnow.domain.impl.AbstractTransaction;
 import lombok.Getter;
 
 import java.math.BigDecimal;
-
+/**
+ * A transaction type representing a deposit.
+ * It performs a debit operation on an account, but has no account to credit.
+ *
+ * @author Grzegorz Solinski
+ */
 @Getter
 public class Deposit extends AbstractTransaction implements Transaction {
 
