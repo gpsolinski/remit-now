@@ -6,6 +6,7 @@ package com.gpsolinski.remitnow.domain.impl;
 
 import com.gpsolinski.remitnow.domain.Transaction;
 import com.gpsolinski.remitnow.domain.TransactionState;
+import com.gpsolinski.remitnow.validators.TransactionAmountValidator;
 import lombok.Getter;
 
 import java.math.BigDecimal;
@@ -23,6 +24,7 @@ public abstract class AbstractTransaction implements Transaction {
     protected AtomicReference<TransactionState> state;
 
     public AbstractTransaction(Long id, BigDecimal amount) {
+        TransactionAmountValidator.validate(amount);
         this.id = id;
         this.amount = amount;
         this.state = new AtomicReference<>(TransactionState.NEW);

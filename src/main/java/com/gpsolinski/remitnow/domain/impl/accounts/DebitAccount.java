@@ -6,6 +6,7 @@ package com.gpsolinski.remitnow.domain.impl.accounts;
 
 import com.gpsolinski.remitnow.domain.Account;
 import com.gpsolinski.remitnow.exceptions.InsufficientFundsException;
+import com.gpsolinski.remitnow.validators.TransactionAmountValidator;
 import lombok.Getter;
 
 import java.math.BigDecimal;
@@ -46,11 +47,13 @@ public final class DebitAccount implements Account {
 
     @Override
     public void debit(BigDecimal amount) {
+        TransactionAmountValidator.validate(amount);
         availableBalance.accumulateAndGet(amount, BigDecimal::add);
     }
 
     @Override
     public synchronized void credit(BigDecimal amount) throws InsufficientFundsException {
+        TransactionAmountValidator.validate(amount);
         BigDecimal currentBalance = availableBalance.get();
         if (currentBalance.compareTo(amount) < 0) {
             throw new InsufficientFundsException(id);

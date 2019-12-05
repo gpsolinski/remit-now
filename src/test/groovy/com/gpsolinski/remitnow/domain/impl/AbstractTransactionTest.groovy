@@ -39,6 +39,64 @@ class AbstractTransactionTest extends Specification {
     transaction.state == TransactionState.NEW
   }
 
+  def 'create transaction with negative amount'() {
+    when: 'creating a new object of a class extending AbstractTransaction'
+    def transaction = new AbstractTransaction(1, -10.00) {
+      @Override
+      Account getCreditAccount() {
+        return null
+      }
+
+      @Override
+      Account getDebitAccount() {
+        return null
+      }
+
+      @Override
+      TransactionType getType() {
+        return null
+      }
+
+      @Override
+      void complete() throws InsufficientFundsException {
+
+      }
+    }
+
+    then:
+    def e = thrown(IllegalArgumentException)
+    e.message == 'Transaction amount needs to be positive'
+  }
+
+  def 'create transaction with zero amount'() {
+    when: 'creating a new object of a class extending AbstractTransaction'
+    def transaction = new AbstractTransaction(1, 0.00) {
+      @Override
+      Account getCreditAccount() {
+        return null
+      }
+
+      @Override
+      Account getDebitAccount() {
+        return null
+      }
+
+      @Override
+      TransactionType getType() {
+        return null
+      }
+
+      @Override
+      void complete() throws InsufficientFundsException {
+
+      }
+    }
+
+    then:
+    def e = thrown(IllegalArgumentException)
+    e.message == 'Transaction amount needs to be positive'
+  }
+
   def 'validate incomplete transaction state'() {
     given: 'an abstract transaction instance'
     def transaction = new AbstractTransaction(1, 50.00) {
