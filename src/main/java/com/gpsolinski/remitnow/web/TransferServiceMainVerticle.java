@@ -43,7 +43,7 @@ public class TransferServiceMainVerticle extends AbstractVerticle {
 
         val accountRepository = context.getAccountRepository();
         val transactionRepository = context.getTransactionRepository();
-        val transferService = context.getTransferService();
+        val transferService = context.getTransactionService();
 
         // Create an instance of TransactionManagerService and mount to event bus
         TransferApiHandler transferApiHandler = TransferApiHandler.create(accountRepository,

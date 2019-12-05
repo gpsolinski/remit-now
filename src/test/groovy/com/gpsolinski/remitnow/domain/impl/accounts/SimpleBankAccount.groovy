@@ -13,7 +13,7 @@ class SimpleBankAccount implements Account {
   BigDecimal availableBalance
   final Currency currency
 
-  SimpleBankAccount(Long id, BigDecimal initialBalance = 0, Currency currency = Currency.getInstance(Locale.US)) {
+  SimpleBankAccount(Long id, BigDecimal initialBalance = 0.00, Currency currency = Currency.getInstance(Locale.US)) {
     this.id = id
     this.balance = initialBalance
     this.availableBalance = initialBalance

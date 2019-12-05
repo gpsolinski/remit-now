@@ -13,7 +13,7 @@ class AbstractTransactionTest extends Specification {
 
   def 'transaction is created in the NEW state'() {
     when: 'creating a new object of a class extending AbstractTransaction'
-    def transaction = new AbstractTransaction(1, BigDecimal.valueOf(50)) {
+    def transaction = new AbstractTransaction(1, 50.00) {
       @Override
       Account getCreditAccount() {
         return null
@@ -41,7 +41,7 @@ class AbstractTransactionTest extends Specification {
 
   def 'validate incomplete transaction state'() {
     given: 'an abstract transaction instance'
-    def transaction = new AbstractTransaction(1, BigDecimal.valueOf(50)) {
+    def transaction = new AbstractTransaction(1, 50.00) {
       @Override
       Account getCreditAccount() {
         return null
@@ -82,7 +82,7 @@ class AbstractTransactionTest extends Specification {
 
   def 'validate incomplete transaction state fails when in the COMPLETED state'() {
     given: 'an abstract transaction instance'
-    def transaction = new AbstractTransaction(1, BigDecimal.valueOf(50)) {
+    def transaction = new AbstractTransaction(1, 50.00) {
       @Override
       Account getCreditAccount() {
         return null

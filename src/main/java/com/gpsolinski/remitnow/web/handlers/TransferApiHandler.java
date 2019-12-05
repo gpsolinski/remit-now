@@ -6,7 +6,7 @@ package com.gpsolinski.remitnow.web.handlers;
 
 import com.gpsolinski.remitnow.repository.AccountRepository;
 import com.gpsolinski.remitnow.repository.TransactionRepository;
-import com.gpsolinski.remitnow.services.TransferService;
+import com.gpsolinski.remitnow.services.TransactionService;
 import com.gpsolinski.remitnow.web.dto.AccountPayload;
 import com.gpsolinski.remitnow.web.dto.AmountPayload;
 import com.gpsolinski.remitnow.web.dto.TransactionPayload;
@@ -22,8 +22,8 @@ public interface TransferApiHandler {
 
     static TransferApiHandler create(AccountRepository accountRepository,
                                      TransactionRepository transactionRepository,
-                                     TransferService transferService) {
-        return new DefaultTransferApiHandler(accountRepository, transactionRepository, transferService);
+                                     TransactionService transactionService) {
+        return new DefaultTransferApiHandler(accountRepository, transactionRepository, transactionService);
     }
 
     void getAccounts(OperationRequest context, Handler<AsyncResult<OperationResponse>> resultHandler);

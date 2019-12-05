@@ -7,19 +7,19 @@ package com.gpsolinski.remitnow.util
 import com.gpsolinski.remitnow.domain.impl.TransactionType
 import com.gpsolinski.remitnow.domain.impl.accounts.SimpleBankAccount
 import com.gpsolinski.remitnow.domain.impl.transactions.FakeTransaction
-import com.gpsolinski.remitnow.web.util.JsonUtils
+import com.gpsolinski.remitnow.web.util.JsonUtil
 import groovy.json.JsonSlurper
 import io.vertx.ext.web.api.validation.ValidationException
 import spock.lang.Specification
 
-class JsonUtilsTest extends Specification {
+class JsonUtilTest extends Specification {
 
   def 'transform account to JsonObject'() {
     given:
     def account = new SimpleBankAccount(1, 20.00)
 
     when:
-    def result = JsonUtils.transformAccount(account)
+    def result = JsonUtil.transformAccount(account)
 
     then:
     new JsonSlurper().parseText(result.toString()) == [id: 1, currency: "USD", balance: "20.00", availableBalance: "20.00"]
@@ -32,7 +32,7 @@ class JsonUtilsTest extends Specification {
     def accounts = [firstAccount, secondAccount]
 
     when:
-    def result = JsonUtils.transformAccounts(accounts)
+    def result = JsonUtil.transformAccounts(accounts)
 
     then:
     new JsonSlurper().parseText(result.toString()) == [[id: 1, currency: "USD", balance: "20.00", availableBalance: "20.00"],
@@ -46,7 +46,7 @@ class JsonUtilsTest extends Specification {
     def transaction = new FakeTransaction(1, 20.00, fromAccount, toAccount, TransactionType.TRANSFER)
 
     when:
-    def result = JsonUtils.transformTransaction(transaction)
+    def result = JsonUtil.transformTransaction(transaction)
 
     then:
     new JsonSlurper().parseText(result.toString()) == [id         : 1,
@@ -66,7 +66,7 @@ class JsonUtilsTest extends Specification {
     def transactions = [firstTransaction, secondTransaction]
 
     when:
-    def result = JsonUtils.transformTransactions(transactions)
+    def result = JsonUtil.transformTransactions(transactions)
 
     then:
     new JsonSlurper().parseText(result.toString()) == [[id         : 1,
@@ -87,7 +87,7 @@ class JsonUtilsTest extends Specification {
     def exception = new Exception(message)
 
     when:
-    def result = JsonUtils.transformError(exception)
+    def result = JsonUtil.transformError(exception)
 
     then:
     new JsonSlurper().parseText(result.toString()) == [message: message]
@@ -98,7 +98,7 @@ class JsonUtilsTest extends Specification {
     def message = "some message"
 
     when:
-    def result = JsonUtils.createError(message)
+    def result = JsonUtil.createError(message)
 
     then:
     new JsonSlurper().parseText(result.toString()) == [message: message]
@@ -111,7 +111,7 @@ class JsonUtilsTest extends Specification {
     def errorType = ValidationException.ErrorType.JSON_INVALID
 
     when:
-    def result = JsonUtils.createValidationError(message, jsonPath, errorType)
+    def result = JsonUtil.createValidationError(message, jsonPath, errorType)
 
     then:
     new JsonSlurper().parseText(result.toString()) == [message: message, property: jsonPath, errorType: errorType.toString()]

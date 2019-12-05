@@ -21,7 +21,7 @@ class DefaultTransactionRepositoryTest extends Specification {
     def recipient = new SimpleBankAccount(2)
 
     and: 'a non-zero amount'
-    def amount = BigDecimal.valueOf(100)
+    def amount = 100.00
 
     when:
     def transfer = underTest.createTransfer(sender, recipient, amount)
@@ -42,7 +42,7 @@ class DefaultTransactionRepositoryTest extends Specification {
     def recipient = new SimpleBankAccount(1)
 
     and: 'a non-zero amount'
-    def amount = BigDecimal.valueOf(100)
+    def amount = 100.00
 
     when:
     def deposit = underTest.createDeposit(recipient, amount)
@@ -59,11 +59,11 @@ class DefaultTransactionRepositoryTest extends Specification {
     def underTest = new DefaultTransactionRepository()
 
     and: 'an account to debit with non-zero initial balance'
-    def initialBalance = BigDecimal.valueOf(100)
+    def initialBalance = 100.00
     def account = new SimpleBankAccount(1, initialBalance)
 
     and: 'an amount to withdraw'
-    def amount = BigDecimal.valueOf(50)
+    def amount = 50.00
 
     when:
     def withdrawal = underTest.createWithdrawal(account, amount)

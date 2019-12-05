@@ -15,7 +15,7 @@ class DepositTest extends Specification {
     def account = new SimpleBankAccount(1)
 
     and: 'an amount to deposit'
-    def amount = BigDecimal.valueOf(100)
+    def amount = 100.00
 
     and: 'a new deposit transaction'
     def deposit = new Deposit(1, account, amount)
@@ -33,7 +33,7 @@ class DepositTest extends Specification {
     def account = new SimpleBankAccount(1)
 
     and:
-    def deposit = new Deposit(1, account, BigDecimal.valueOf(50))
+    def deposit = new Deposit(1, account,50.00)
 
     when:
     deposit.creditAccount

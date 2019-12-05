@@ -13,14 +13,14 @@ class TransferTest extends Specification {
 
   def 'complete transfer from account with sufficient funds'() {
     given: 'a account with non-zero initial balance'
-    def initialBalance = BigDecimal.valueOf(100)
+    def initialBalance = 100.00
     def sender = new SimpleBankAccount(1, initialBalance)
 
     and: 'another account with zero balance'
     def recipient = new SimpleBankAccount(2)
 
     and: 'a valid amount'
-    def amount = BigDecimal.valueOf(50)
+    def amount = 50.00
 
     and: 'a money transfer between these accounts'
     def transfer = new Transfer(1, sender, recipient, amount)
@@ -32,20 +32,20 @@ class TransferTest extends Specification {
     sender.availableBalance == initialBalance.subtract(amount)
     sender.balance == initialBalance
     recipient.availableBalance == amount
-    recipient.balance == BigDecimal.ZERO
+    recipient.balance == 0.00
     transfer.state == TransactionState.COMPLETED
   }
 
   def 'order transfer from account with insufficient funds'() {
     given: 'a account with non-zero initial balance'
-    def initialBalance = BigDecimal.valueOf(20)
+    def initialBalance = 20.00
     def sender = new SimpleBankAccount(1, initialBalance)
 
     and: 'another account with zero balance'
     def recipient = new SimpleBankAccount(2)
 
     and: 'an excessive amount'
-    def amount = BigDecimal.valueOf(50)
+    def amount = 50.00
 
     and: 'a money transfer between these accounts'
     def transfer = new Transfer(1, sender, recipient, amount)
@@ -57,8 +57,8 @@ class TransferTest extends Specification {
     thrown(InsufficientFundsException)
     sender.availableBalance == initialBalance
     sender.balance == initialBalance
-    recipient.availableBalance == BigDecimal.ZERO
-    recipient.balance == BigDecimal.ZERO
+    recipient.availableBalance == 0.00
+    recipient.balance == 0.00
     transfer.state == TransactionState.FAILED
   }
 }

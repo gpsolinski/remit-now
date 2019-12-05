@@ -16,7 +16,7 @@ import io.vertx.ext.web.api.validation.ValidationException;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-public class JsonUtils {
+public class JsonUtil {
 
     public static JsonObject transformAccount(Account account) {
         return new AccountPayload(account).toJson();

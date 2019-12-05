@@ -18,7 +18,7 @@ class DefaultAccountRepositoryTest extends Specification {
     then:
     account.id == 1
     account.currency == Currency.getInstance(Locale.US)
-    account.balance == BigDecimal.ZERO
-    account.availableBalance == BigDecimal.ZERO
+    account.balance == 0.00
+    account.availableBalance == 0.00
   }
 }
