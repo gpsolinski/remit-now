@@ -78,7 +78,7 @@ class AccountApiTest extends ApiTestBase {
       status == 400
       with (data) {
         message == 'Currency code was not recognized'
-        property == 'body.currency'
+        property == 'currency'
         errorType == 'JSON_INVALID'
       }
     }
@@ -106,9 +106,9 @@ class AccountApiTest extends ApiTestBase {
     def e = thrown(HttpResponseException)
     with (e.response) {
       status == 404
-      statusLine.reasonPhrase == 'Not found'
+      statusLine.reasonPhrase == 'Not Found'
       with (data) {
-        message == "Account with the given ID does not exist"
+        message == "Account with ID ${id} does not exist."
       }
     }
   }

@@ -9,8 +9,8 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @DataObject(generateConverter = true, publicConverter = false)
 public class ErrorPayload {
-    private String property;
     private String message;
+    private String property;
     private ValidationException.ErrorType errorType;
 
     public ErrorPayload(JsonObject json) {
