@@ -4,6 +4,7 @@ import com.gpsolinski.remitnow.domain.Account;
 import com.gpsolinski.remitnow.domain.Transaction;
 import com.gpsolinski.remitnow.domain.TransactionState;
 import com.gpsolinski.remitnow.domain.impl.AbstractTransaction;
+import com.gpsolinski.remitnow.domain.impl.TransactionType;
 import lombok.Getter;
 
 import java.math.BigDecimal;
@@ -31,6 +32,11 @@ public class Deposit extends AbstractTransaction implements Transaction {
     @Override
     public TransactionState getState() {
         return state.get();
+    }
+
+    @Override
+    public TransactionType getType() {
+        return TransactionType.DEPOSIT;
     }
 
     @Override

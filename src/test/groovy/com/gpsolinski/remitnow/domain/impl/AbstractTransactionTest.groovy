@@ -21,6 +21,11 @@ class AbstractTransactionTest extends Specification {
       }
 
       @Override
+      TransactionType getType() {
+        return null
+      }
+
+      @Override
       void complete() throws InsufficientFundsException {
 
       }
@@ -40,6 +45,11 @@ class AbstractTransactionTest extends Specification {
 
       @Override
       Account getDebitAccount() {
+        return null
+      }
+
+      @Override
+      TransactionType getType() {
         return null
       }
 
@@ -76,6 +86,11 @@ class AbstractTransactionTest extends Specification {
 
       @Override
       Account getDebitAccount() {
+        return null
+      }
+
+      @Override
+      TransactionType getType() {
         return null
       }
 

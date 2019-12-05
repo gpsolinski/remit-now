@@ -4,6 +4,7 @@ import com.gpsolinski.remitnow.domain.Account;
 import com.gpsolinski.remitnow.domain.Transaction;
 import com.gpsolinski.remitnow.domain.TransactionState;
 import com.gpsolinski.remitnow.domain.impl.AbstractTransaction;
+import com.gpsolinski.remitnow.domain.impl.TransactionType;
 import com.gpsolinski.remitnow.exceptions.InsufficientFundsException;
 import lombok.Getter;
 
@@ -25,6 +26,11 @@ public final class Transfer extends AbstractTransaction implements Transaction {
         super(id, amount);
         this.creditAccount = creditAccount;
         this.debitAccount = debitAccount;
+    }
+
+    @Override
+    public TransactionType getType() {
+        return TransactionType.TRANSFER;
     }
 
     @Override

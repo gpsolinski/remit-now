@@ -19,7 +19,8 @@ class TransactionApiTest extends ApiTestBase {
         then:
         with (response) {
             status == 200
-            data.findAll { it.toAccount == account.id }.collect { new BigDecimal(it.amount) } == [firstAmount, secondAmount]
+            data.findAll { it.type == 'DEPOSIT' && it.toAccount == account.id}
+                .collect { new BigDecimal(it.amount) } == [firstAmount, secondAmount]
         }
     }
 

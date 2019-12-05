@@ -2,6 +2,7 @@ package com.gpsolinski.remitnow.web.dto;
 
 import com.gpsolinski.remitnow.domain.Transaction;
 import com.gpsolinski.remitnow.domain.TransactionState;
+import com.gpsolinski.remitnow.domain.impl.TransactionType;
 import com.gpsolinski.remitnow.domain.impl.transactions.Deposit;
 import com.gpsolinski.remitnow.domain.impl.transactions.Withdrawal;
 import io.vertx.codegen.annotations.DataObject;
@@ -17,6 +18,7 @@ public class TransactionPayload {
     private Long toAccount;
     private String amount;
     private TransactionState state;
+    private TransactionType type;
 
     public TransactionPayload(JsonObject json) {
         TransactionPayloadConverter.fromJson(json, this);
@@ -30,8 +32,9 @@ public class TransactionPayload {
         if (hasDebitAccount(transaction)) {
             this.toAccount = transaction.getDebitAccount().getId();
         }
-        this.amount = transaction.getAmount().setScale(2).toPlainString();
+        this.amount = transaction.getAmount().toPlainString();
         this.state = transaction.getState();
+        this.type = transaction.getType();
     }
 
     public JsonObject toJson() {
@@ -41,11 +44,11 @@ public class TransactionPayload {
     }
 
     private boolean hasCreditAccount(Transaction transaction) {
-        return !(transaction instanceof Deposit);
+        return transaction.getType() != TransactionType.DEPOSIT;
     }
 
     private boolean hasDebitAccount(Transaction transaction) {
-        return !(transaction instanceof Withdrawal);
+        return transaction.getType() != TransactionType.WITHDRAWAL;
     }
 
     public Long getId() {
@@ -95,6 +98,16 @@ public class TransactionPayload {
     @Fluent
     public TransactionPayload setState(TransactionState state) {
         this.state = state;
+        return this;
+    }
+
+    public TransactionType getType() {
+        return type;
+    }
+
+    @Fluent
+    public TransactionPayload setType(TransactionType type) {
+        this.type = type;
         return this;
     }
 }

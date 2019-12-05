@@ -29,6 +29,7 @@ class TransferApiTest extends ApiTestBase {
         toAccount == recipient.id
         amount == amountToTransfer.toPlainString()
         state == 'COMPLETED'
+        type == 'TRANSFER'
       }
     }
   }

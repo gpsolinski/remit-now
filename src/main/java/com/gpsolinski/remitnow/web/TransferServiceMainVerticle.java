@@ -2,6 +2,7 @@ package com.gpsolinski.remitnow.web;
 
 import com.gpsolinski.remitnow.context.ApplicationContext;
 import com.gpsolinski.remitnow.web.dto.ErrorPayload;
+import com.gpsolinski.remitnow.web.handlers.TransferApiHandler;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
 import io.vertx.core.Promise;
@@ -10,12 +11,10 @@ import io.vertx.core.eventbus.MessageConsumer;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.json.JsonObject;
-import io.vertx.ext.web.Router;
 import io.vertx.ext.web.api.contract.openapi3.OpenAPI3RouterFactory;
 import io.vertx.ext.web.api.validation.ValidationException;
 import io.vertx.serviceproxy.ServiceBinder;
 import lombok.val;
-import com.gpsolinski.remitnow.web.handlers.TransferApiHandler;
 
 public class TransferServiceMainVerticle extends AbstractVerticle {
 
@@ -58,13 +57,13 @@ public class TransferServiceMainVerticle extends AbstractVerticle {
         Promise<Void> promise = Promise.promise();
         OpenAPI3RouterFactory.create(this.vertx, "/transfer_api-1.0.yaml", openAPI3RouterFactoryAsyncResult -> {
             if (openAPI3RouterFactoryAsyncResult.succeeded()) {
-                OpenAPI3RouterFactory routerFactory = openAPI3RouterFactoryAsyncResult.result();
+                val routerFactory = openAPI3RouterFactoryAsyncResult.result();
 
                 // Mount services on event bus based on extensions
                 routerFactory.mountServicesFromExtensions();
 
                 // Generate the router
-                Router router = routerFactory.getRouter();
+                val router = routerFactory.getRouter();
 
                 // Manage the validation failure for all routes in the router
                 router.errorHandler(400, routingContext -> {
@@ -74,7 +73,6 @@ public class TransferServiceMainVerticle extends AbstractVerticle {
                             .setChunked(true);
                     val cause = routingContext.failure();
                     if (cause instanceof ValidationException) {
-                        String validationErrorMessage = cause.getMessage();
                         val errorPayload = new ErrorPayload((ValidationException)cause);
                         response.write(errorPayload.toJson().encodePrettily());
                     }

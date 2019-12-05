@@ -5,7 +5,7 @@ info:
   version: 1.0.0
 
 servers:
-  - url: /api/v1 # this doesn't seem to work in vertx, so all the api paths are at the root context path
+  - url: /api/v1 # this doesn't seem to work in vertx, so all the api paths are at the root context path: /
 paths:
   /accounts:
     get:
@@ -268,12 +268,18 @@ components:
         state:
           "$ref": "#/components/schemas/TransactionState"
           readOnly: true
+        type:
+          "$ref": "#/components/schemas/TransactionType"
+          readOnly: true
       additionalProperties: false
       required:
         - amount
     TransactionState:
       type: string
       enum: [NEW, COMPLETED, FAILED]
+    TransactionType:
+      type: string
+      enum: [DEPOSIT, WITHDRAWAL, TRANSFER]
     Error:
       type: object
       properties:
