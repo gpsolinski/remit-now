@@ -1,0 +1,285 @@
+openapi: 3.0.0
+info:
+  title: Transfer API
+  description: Basic REST API for money transfers between accounts
+  version: 1.0.0
+
+servers:
+  - url: /api/v1
+paths:
+  /accounts:
+    get:
+      operationId: getAccounts
+      x-vertx-event-bus: transfer_api.gpsolinski.com
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Account"
+        '5XX':
+          description: Unexpected error.
+    post:
+      operationId: createAccount
+      x-vertx-event-bus: transfer_api.gpsolinski.com
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/Account"
+      responses:
+        '201':
+          description: An account was created.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Account"
+        '400':
+          description: Bad request - currency missing or not recognized.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        '5XX':
+          description: Unexpected error.
+  /account/{accountId}:
+    parameters:
+      - name: accountId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    get:
+      operationId: findAccountById
+      x-vertx-event-bus: transfer_api.gpsolinski.com
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Account"
+        '404':
+          description: An account with the specified ID was not found.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        '5XX':
+          description: Unexpected error.
+  /account/{accountId}/deposit:
+    parameters:
+      - name: accountId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    post:
+      operationId: deposit
+      x-vertx-event-bus: transfer_api.gpsolinski.com
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/Amount"
+      responses:
+        '200':
+          description: Deposit completed.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Account"
+        '400':
+          description: Bad request - incorrect amount.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        '404':
+          description: An account with the specified ID was not found.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        '5XX':
+          description: Unexpected error.
+  /account/{accountId}/withdraw:
+    parameters:
+      - name: accountId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    post:
+      operationId: withdraw
+      x-vertx-event-bus: transfer_api.gpsolinski.com
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/Amount"
+      responses:
+        '200':
+          description: Withdrawal completed.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Account"
+        '400':
+          description: Bad request - incorrect amount.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        '404':
+          description: An account with the specified ID was not found.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        '5XX':
+          description: Unexpected error.
+
+  /transactions:
+    get:
+      operationId: getTransactions
+      x-vertx-event-bus: transfer_api.gpsolinski.com
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Transaction"
+        '5XX':
+          description: Unexpected error.
+  /transaction/{transactionId}:
+    parameters:
+      - name: transactionId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    get:
+      operationId: findTransactionById
+      x-vertx-event-bus: transfer_api.gpsolinski.com
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Transaction"
+        '404':
+          description: A transaction with the specified ID was not found.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        '5XX':
+          description: Unexpected error.
+
+  /transfer:
+    post:
+      operationId: transfer
+      x-vertx-event-bus: transfer_api.gpsolinski.com
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/Transaction"
+      responses:
+        '200':
+          description: Ordered transfer.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Transaction"
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        '5XX':
+          description: Unexpected error.
+
+components:
+  schemas:
+    Account:
+      type: object
+      properties:
+        id:
+          type: integer
+          minimum: 1
+          format: int64
+          readOnly: true
+        balance:
+          type: string
+          readOnly: true
+        availableBalance:
+          type: string
+          readOnly: true
+        currency:
+          type: string
+          pattern: '^[A-Z]{3}$'
+      additionalProperties: false
+      required:
+        - currency
+    Amount:
+      type: object
+      properties:
+        amount:
+          type: string
+      additionalProperties: false
+      required:
+        - amount
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: integer
+          minimum: 1
+          format: int64
+          readOnly: true
+        amount:
+          type: string
+        fromAccount:
+          type: integer
+          minimum: 1
+          format: int64
+        toAccount:
+          type: integer
+          minimum: 1
+          format: int64
+        state:
+          "$ref": "#/components/schemas/TransactionState"
+          readOnly: true
+      additionalProperties: false
+      required:
+        - amount
+    TransactionState:
+      type: string
+      enum: [NEW, COMPLETED, FAILED]
+    Error:
+      type: object
+      properties:
+        message:
+            type: string
+            readOnly: true
+      required:
+        - message
+      additionalProperties: true
