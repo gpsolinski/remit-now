@@ -12,6 +12,12 @@ The inspiration for some concerns (like persistence/storage) was drawn from expe
 * Vert.x Web Api Service for API specification parsing and automatic router generation
 * Spock & Groovy for testing
 
+## Running
+1. Build the jar: `./gradlew jar`
+2. Run the application: `java -jar ./build/libs/remit-now-1.0-SNAPSHOT.jar`
+
+NOTE: The application start a local HTTP server on port 8080.
+
 ## Future work
 * Improve/extract validation (both design and scope - currency validation not implemented)
 * Logging
