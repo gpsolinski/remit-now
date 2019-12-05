@@ -30,7 +30,7 @@ public abstract class AbstractTransaction implements Transaction {
         }
     }
 
-    private boolean isCompleted() {
+    public boolean isCompleted() {
         return state.get() == TransactionState.COMPLETED;
     }
 }

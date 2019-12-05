@@ -24,10 +24,18 @@ public class TransactionalTransferService implements TransferService {
     @Override
     public Transaction transferFunds(Account sender, Account recipient, BigDecimal amount) throws InsufficientFundsException {
         final Transfer transfer = transactionRepository.createTransfer(sender, recipient, amount);
-        transfer.complete();
-        transactionRepository.save(transfer);
-        accountRepository.save(sender);
-        accountRepository.save(recipient);
+        try {
+            transfer.complete();
+
+            if (transfer.isCompleted()) {
+                sender.updateBalance();
+                recipient.updateBalance();
+                accountRepository.save(sender);
+                accountRepository.save(recipient);
+            }
+        } finally {
+            transactionRepository.save(transfer);
+        }
         return transfer;
     }
 }

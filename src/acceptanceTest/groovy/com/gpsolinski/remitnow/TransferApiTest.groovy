@@ -53,7 +53,7 @@ class TransferApiTest extends ApiTestBase {
     with (e.response) {
       status == 400
       with (data) {
-        message == 'Insufficient balance in the given account'
+        message == "Insufficient balance in the account with ID ${sender.id}"
       }
     }
   }

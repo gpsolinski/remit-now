@@ -24,7 +24,7 @@ class SimpleBankAccount implements Account {
   @Override
   void credit(BigDecimal amount) throws InsufficientFundsException {
     if (availableBalance < amount) {
-      throw new InsufficientFundsException()
+      throw new InsufficientFundsException(id)
     }
     availableBalance = availableBalance.subtract(amount)
   }

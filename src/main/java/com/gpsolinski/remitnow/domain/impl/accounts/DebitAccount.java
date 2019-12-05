@@ -49,7 +49,7 @@ public final class DebitAccount implements Account {
     public synchronized void credit(BigDecimal amount) throws InsufficientFundsException {
         BigDecimal currentBalance = availableBalance.get();
         if (currentBalance.compareTo(amount) < 0) {
-            throw new InsufficientFundsException();
+            throw new InsufficientFundsException(id);
         }
         availableBalance.accumulateAndGet(amount, BigDecimal::subtract);
     }

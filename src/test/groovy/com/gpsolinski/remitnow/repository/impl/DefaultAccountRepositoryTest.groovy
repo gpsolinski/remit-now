@@ -17,26 +17,4 @@ class DefaultAccountRepositoryTest extends Specification {
     account.balance == BigDecimal.ZERO
     account.availableBalance == BigDecimal.ZERO
   }
-
-  def 'saving account updates the balance'() {
-    given:
-    def accountRepository = new DefaultAccountRepository()
-
-    and: 'a debit account'
-    def account = accountRepository.createDebit(Currency.getInstance(Locale.US))
-
-    and: 'some transactions'
-    account.debit(BigDecimal.valueOf(100))
-    account.credit(BigDecimal.valueOf(30))
-
-    and:
-    assert account.availableBalance != account.balance
-
-    when:
-    accountRepository.save(account)
-
-    then:
-    account.balance == account.availableBalance
-  }
-
 }

@@ -17,10 +17,4 @@ public class DefaultAccountRepository extends BasicInMemoryRepository<Account, L
         super.save(account);
         return account;
     }
-
-    @Override
-    public void save(Account account) {
-        account.updateBalance();
-        super.save(account);
-    }
 }
